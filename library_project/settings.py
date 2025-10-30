@@ -15,11 +15,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "account",
     "catalog",
 ]
-
-AUTH_USER_MODEL = "account.LibraryUser"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

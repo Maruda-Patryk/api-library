@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
                     models.CharField(
                         blank=True,
                         max_length=6,
-                        null=True,  # noqa: DJ01
+                        null=True,
                         validators=[
                             django.core.validators.RegexValidator(
                                 "^\\d{6}$", "The library card number must contain exactly six digits."

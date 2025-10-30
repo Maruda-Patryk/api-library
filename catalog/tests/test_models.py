@@ -1,6 +1,5 @@
 from datetime import timedelta
 
-from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.utils import timezone
@@ -9,15 +8,6 @@ from ..models import Book
 
 
 class BookModelTests(TestCase):
-    def setUp(self):
-        User = get_user_model()
-        self.user = User.objects.create_user(
-            library_card_number="123456",
-            first_name="Jan",
-            last_name="Kowalski",
-            password="testpass123",
-        )
-
     def test_defaults(self):
         book = Book.objects.create(serial_number="000111", title="Quo Vadis", author="Henryk Sienkiewicz")
 
@@ -34,17 +24,17 @@ class BookModelTests(TestCase):
         book = Book.objects.create(serial_number="000333", title="Solaris", author="Stanislaw Lem")
 
         before_call = timezone.now() - timedelta(seconds=1)
-        book.mark_borrowed(self.user)
+        book.mark_borrowed("123456")
 
         self.assertTrue(book.is_borrowed)
-        self.assertEqual(book.borrowed_by, self.user)
+        self.assertEqual(book.borrowed_by, "123456")
         self.assertGreaterEqual(book.borrowed_at, before_call)
 
     def test_mark_borrowed_with_custom_timestamp(self):
         book = Book.objects.create(serial_number="000334", title="Solaris 2", author="Stanislaw Lem")
         custom_time = timezone.now() - timedelta(days=1)
 
-        book.mark_borrowed(self.user, borrowed_at=custom_time)
+        book.mark_borrowed("123456", borrowed_at=custom_time)
 
         self.assertEqual(book.borrowed_at, custom_time)
 
@@ -54,7 +44,7 @@ class BookModelTests(TestCase):
             title="The Manuscript Found in Saragossa",
             author="Jan Potocki",
             is_borrowed=True,
-            borrowed_by=self.user,
+            borrowed_by="654321",
             borrowed_at=timezone.now(),
         )
 
@@ -66,6 +56,12 @@ class BookModelTests(TestCase):
 
     def test_serial_number_validator(self):
         book = Book(serial_number="abc123", title="Invalid Serial", author="Author")
+
+        with self.assertRaises(ValidationError):
+            book.full_clean()
+
+    def test_borrowed_by_validator(self):
+        book = Book(serial_number="000555", title="Valid Serial", author="Author", borrowed_by="abcdef")
 
         with self.assertRaises(ValidationError):
             book.full_clean()

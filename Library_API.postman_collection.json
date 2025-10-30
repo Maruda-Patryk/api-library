@@ -79,8 +79,7 @@
                 "{{serial_number}}",
                 ""
               ]
-            },
-            "description": "Oznacza książkę jako wypożyczoną przez użytkownika o wskazanym ID."
+            }
           }
         },
         {
@@ -108,8 +107,7 @@
                 "{{serial_number}}",
                 ""
               ]
-            },
-            "description": "Zwraca książkę do biblioteki."
+            }
           }
         },
         {
