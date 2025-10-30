@@ -17,10 +17,22 @@
     <div id="swagger-ui"></div>
     <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
     <script>
+      const getCsrfToken = () => {
+        const match = document.cookie.match(/csrftoken=([^;]+)/);
+        return match ? decodeURIComponent(match[1]) : null;
+      };
+
       window.onload = () => {
         SwaggerUIBundle({
           url: '{% url schema_url %}',
           dom_id: '#swagger-ui',
+          requestInterceptor: (request) => {
+            const csrfToken = getCsrfToken();
+            if (csrfToken) {
+              request.headers['X-CSRFToken'] = csrfToken;
+            }
+            return request;
+          },
         });
       };
     </script>
