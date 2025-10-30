@@ -2,6 +2,10 @@
 
 A simple Django application exposing an API for managing a library's book collection.
 
+## Note
+
+A minimalist version without the user module is also available under the branch <b>feature/lite-branch</b>.
+
 ## Getting Started
 
 1. Build the image and start the container:
