@@ -18,6 +18,10 @@ class BorrowerSerializer(serializers.ModelSerializer):
 
 
 class BorrowerRelatedField(serializers.PrimaryKeyRelatedField):
+    default_error_messages = {
+        "does_not_exist": 'User with pk "{pk_value}" does not exist.',
+    }
+
     def to_representation(self, value):
         if value is None:
             return None

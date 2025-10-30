@@ -100,3 +100,19 @@ class BookAPITestCase(APITestCase):
 
         book.refresh_from_db()
         self.assertEqual(book.borrowed_by, first_user)
+
+    def test_borrow_with_nonexistent_user_returns_clear_message(self):
+        book = Book.objects.create(serial_number="555666", title="Ogniem i Mieczem", author="Henryk Sienkiewicz")
+        detail_url = reverse("book-detail", args=[book.serial_number])
+
+        response = self.client.patch(
+            detail_url,
+            {"is_borrowed": True, "borrowed_by": 987654},
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data["borrowed_by"],
+            ['User with pk "987654" does not exist.'],
+        )

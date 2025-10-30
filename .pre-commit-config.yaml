@@ -1,0 +1,44 @@
+repos:
+  - repo: local
+    hooks:
+      - id: docker-compose-tests
+        name: Run Django tests inside Docker Compose
+        entry: >-
+          docker compose -f docker-compose.yml run --rm -T web python manage.py test --settings=library_project.settings
+        language: system
+        pass_filenames: false
+
+  - repo: https://github.com/psf/black
+    rev: 24.3.0
+    hooks:
+      - id: black
+        args: [ "-l", "120" ]
+        files: "\\.py$"
+
+  - repo: https://github.com/pre-commit/mirrors-isort
+    rev: v5.10.1
+    hooks:
+      - id: isort
+        args: [ "--profile", "black" ]
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 6.1.0
+    hooks:
+      - id: flake8
+        additional_dependencies: [ "flake8-bugbear", "flake8-django" ]
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.9.0
+    hooks:
+      - id: mypy
+        additional_dependencies:
+          - types-requests
+          - types-PyYAML
