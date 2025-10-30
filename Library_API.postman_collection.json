@@ -1,0 +1,147 @@
+{
+  "info": {
+    "_postman_id": "d5c36a3e-3a2b-4b28-9f37-0b99200c1234",
+    "name": "Library API",
+    "description": "Library API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Books",
+      "item": [
+        {
+          "name": "List Books",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/books/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "books",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Book",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"serial_number\": \"123456\",\n  \"title\": \"Pan Tadeusz\",\n  \"author\": \"Adam Mickiewicz\",\n  \"is_borrowed\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/books/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "books",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Borrow Book",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_borrowed\": true,\n  \"borrowed_by\": 123456\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/books/{{serial_number}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "books",
+                "{{serial_number}}",
+                ""
+              ]
+            },
+            "description": "Oznacza książkę jako wypożyczoną przez użytkownika o wskazanym ID."
+          }
+        },
+        {
+          "name": "Return Book",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_borrowed\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/books/{{serial_number}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "books",
+                "{{serial_number}}",
+                ""
+              ]
+            },
+            "description": "Zwraca książkę do biblioteki."
+          }
+        },
+        {
+          "name": "Delete Book",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/books/{{serial_number}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "books",
+                "{{serial_number}}",
+                ""
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "serial_number",
+      "value": "123456"
+    }
+  ]
+}
